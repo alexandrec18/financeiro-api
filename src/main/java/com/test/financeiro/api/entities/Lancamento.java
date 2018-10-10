@@ -52,6 +52,11 @@ public class Lancamento {
 	@JoinColumn(name = "codigo_pessoa")
 	private Pessoa pessoa;
 	
+	@NotNull
+	@ManyToOne
+	@JoinColumn(name = "codigo_empresa")
+	private Empresa empresa;
+	
 	public Lancamento() {
 		
 	}
@@ -126,6 +131,14 @@ public class Lancamento {
 
 	public void setPessoa(Pessoa pessoa) {
 		this.pessoa = pessoa;
+	}		
+
+	public Empresa getEmpresa() {
+		return empresa;
+	}
+
+	public void setEmpresa(Empresa empresa) {
+		this.empresa = empresa;
 	}
 
 	@Override

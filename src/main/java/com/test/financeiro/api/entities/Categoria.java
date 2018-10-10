@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -20,6 +22,11 @@ public class Categoria {
 	@NotNull
 	@Size(min = 3, max = 20)
 	private String nome;
+	
+	@NotNull
+	@ManyToOne
+	@JoinColumn(name = "codigo_empresa")
+	private Empresa empresa;
 	
 	public Categoria() {
 		
@@ -39,6 +46,14 @@ public class Categoria {
 
 	public void setNome(String nome) {
 		this.nome = nome;
+	}		
+	
+	public Empresa getEmpresa() {
+		return empresa;
+	}
+
+	public void setEmpresa(Empresa empresa) {
+		this.empresa = empresa;
 	}
 
 	@Override

@@ -86,6 +86,11 @@ public class LancamentoRepositoryImpl implements LancamentoRepositoryQuery {
 			predicates.add(
 					builder.lessThanOrEqualTo(root.get("dataVencimento"), lancamentoFilter.getDataVencimentoAte()));
 		}
+		
+		if (lancamentoFilter.getEmpresa() != 0) {
+			predicates.add(
+					builder.equal(root.get("empresa"), lancamentoFilter.getEmpresa()));
+		} 
 
 		return predicates.toArray(new Predicate[predicates.size()]);
 	}
