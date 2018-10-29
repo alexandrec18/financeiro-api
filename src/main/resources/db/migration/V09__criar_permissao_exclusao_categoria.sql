@@ -1,1 +1,0 @@
-INSERT INTO permissao (codigo, descricao) values (16, 'ROLE_REMOVER_CATEGORIA');
