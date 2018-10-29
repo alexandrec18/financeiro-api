@@ -1,5 +1,7 @@
 package com.test.financeiro.api.service;
 
+import java.util.Optional;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,11 +23,11 @@ public class CategoriaService {
 	}
 	
 	private Categoria buscarCategoriaExistente(Long codigo) {
-		Categoria categoriaSalva = categoriaRepository.findOne(codigo);
+		Optional<Categoria> categoriaSalva = categoriaRepository.findById(codigo);
 		
-		if (categoriaSalva == null) {
+		if (!categoriaSalva.isPresent()) {
 			throw new IllegalArgumentException();
 		}
-		return categoriaSalva;
+		return categoriaSalva.get();
 	}
 }

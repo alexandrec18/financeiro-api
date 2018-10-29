@@ -1,5 +1,7 @@
 package com.test.financeiro.api.resource;
 
+import java.util.Optional;
+
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
@@ -61,15 +63,15 @@ public class UsuarioResource {
 	@GetMapping("/{codigo}")
 	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_USUARIO') and #oauth2.hasScope('read')")
 	public ResponseEntity<Usuario> buscarPeloCodigo(@PathVariable Long codigo) {
-		Usuario usuario =  usuarioRepository.findOne(codigo);
-		return usuario != null ? ResponseEntity.ok(usuario) : ResponseEntity.notFound().build();
+		Optional<Usuario> usuario =  usuarioRepository.findById(codigo);
+		return usuario.isPresent() ? ResponseEntity.ok(usuario.get()) : ResponseEntity.notFound().build();
 	}
 	
 	@DeleteMapping("/{codigo}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@PreAuthorize("hasAuthority('ROLE_REMOVER_USUARIO') and #oauth2.hasScope('write')")
 	public void remover(@PathVariable Long codigo) {
-		usuarioRepository.delete(codigo);
+		usuarioRepository.deleteById(codigo);
 	}
 	
 	@PutMapping("/{codigo}")

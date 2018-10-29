@@ -1,5 +1,7 @@
 package com.test.financeiro.api.service;
 
+import java.util.Optional;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -22,12 +24,12 @@ public class EmpresaService {
 	}		
 
 	public Empresa buscarEmpresaPeloCodigo(Long codigo) {
-		Empresa empresaSalva = empresaRepository.findOne(codigo);
+		Optional<Empresa> empresaSalva = empresaRepository.findById(codigo);
 		
-		if (empresaSalva == null) {
+		if (!empresaSalva.isPresent()) {
 			throw new EmptyResultDataAccessException(1);
 		}
-		return empresaSalva	;
+		return empresaSalva.get()	;
 	}	
 
 }

@@ -1,7 +1,12 @@
 package com.test.financeiro.api.resource;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -12,7 +17,10 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,9 +31,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.test.financeiro.api.dto.LancamentoEstatisticaCategoria;
+import com.test.financeiro.api.dto.LancamentoEstatisticaDia;
 import com.test.financeiro.api.entities.Lancamento;
 import com.test.financeiro.api.event.RecursoCriadoEvent;
 import com.test.financeiro.api.exceptionhandler.FinanceiroExceptionHandler.Erro;
@@ -51,6 +63,44 @@ public class LancamentoResource {
 	@Autowired
 	private MessageSource messageSource;
 	
+	@PostMapping("/anexo")
+	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_LANCAMENTO') and #oauth2.hasScope('write')")
+	public String uploadAnexo(@RequestParam MultipartFile anexo) throws IOException {
+		OutputStream out = new FileOutputStream(
+				"/Users/Alexandre/Desktop/anexo--" + anexo.getOriginalFilename());
+		out.write(anexo.getBytes());
+		out.close();
+		return "ok";
+	}
+	
+	@GetMapping("/relatorios/por-pessoa")
+	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_LANCAMENTO') and #oauth2.hasScope('read')")
+	public ResponseEntity<byte[]> relatorioPorPessoa(
+			@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate inicio, 
+			@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fim) throws Exception {
+		byte[] relatorio = lancamentoService.relatorioPorPessoa(inicio, fim);
+		
+		HttpHeaders headers = new HttpHeaders();
+		  headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_PDF_VALUE);
+		  headers.add("Content-Disposition", "attachment; filename=porPessoa.pdf");
+		
+		return ResponseEntity.ok()
+				.headers(headers)
+				.body(relatorio);
+	}
+	
+	@GetMapping("/estatisticas/por-categoria")
+	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_LANCAMENTO') and #oauth2.hasScope('read')")
+	public List<LancamentoEstatisticaCategoria> porCategoria(){
+		return lancamentoRepository.porCategoria(LocalDate.now());
+	}
+	
+	@GetMapping("/estatisticas/por-dia")
+	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_LANCAMENTO') and #oauth2.hasScope('read')")
+	public List<LancamentoEstatisticaDia> porDia(){
+		return lancamentoRepository.porDia(LocalDate.now());
+	}
+	
 	@GetMapping	
 	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_LANCAMENTO') and #oauth2.hasScope('read')")
 	public Page<Lancamento> pesquisar(LancamentoFilter lancamentoFilter, Pageable pageable){
@@ -66,8 +116,8 @@ public class LancamentoResource {
 	@GetMapping("/{codigo}")
 	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_LANCAMENTO') and #oauth2.hasScope('read')")
 	public ResponseEntity<Lancamento> buscarPeloCodigo(@PathVariable Long codigo) {
-		Lancamento lancamento =  lancamentoRepository.findOne(codigo);
-		return lancamento != null ? ResponseEntity.ok(lancamento) : ResponseEntity.notFound().build();
+		Optional<Lancamento> lancamento =  lancamentoRepository.findById(codigo);
+		return lancamento.isPresent() ? ResponseEntity.ok(lancamento.get()) : ResponseEntity.notFound().build();
 	}	
 	
 	@PostMapping
@@ -84,7 +134,7 @@ public class LancamentoResource {
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@PreAuthorize("hasAuthority('ROLE_REMOVER_LANCAMENTO') and #oauth2.hasScope('write')")
 	public void remover(@PathVariable Long codigo) {
-		lancamentoRepository.delete(codigo);
+		lancamentoRepository.deleteById(codigo);
 	}
 	
 	@PutMapping("/{codigo}")
