@@ -31,7 +31,7 @@ public class LancamentoRepositoryImpl implements LancamentoRepositoryQuery {
 	private EntityManager manager;
 	
 	@Override
-	public List<LancamentoEstatisticaPessoa> porPessoa(LocalDate inicio, LocalDate fim) {
+	public List<LancamentoEstatisticaPessoa> porPessoa(LocalDate inicio, LocalDate fim, Long empresa) {
 
         CriteriaBuilder criteriaBuilder = manager.getCriteriaBuilder();
 		
@@ -49,7 +49,9 @@ public class LancamentoRepositoryImpl implements LancamentoRepositoryQuery {
 				criteriaBuilder.greaterThanOrEqualTo(root.get("dataVencimento"), 
 						inicio),
 				criteriaBuilder.lessThanOrEqualTo(root.get("dataVencimento"), 
-						fim));
+						fim),
+				criteriaBuilder.equal(root.get("empresa"), 
+						empresa));
 		
 		criteriaQuery.groupBy(root.get("tipo"),
 				root.get("pessoa"));
@@ -62,7 +64,7 @@ public class LancamentoRepositoryImpl implements LancamentoRepositoryQuery {
 	
 	
 	@Override
-	public List<LancamentoEstatisticaCategoria> porCategoria(LocalDate mesReferencia) {
+	public List<LancamentoEstatisticaCategoria> porCategoria(LocalDate mesReferencia, Long empresa) {
 
         CriteriaBuilder criteriaBuilder = manager.getCriteriaBuilder();
 		
@@ -82,7 +84,9 @@ public class LancamentoRepositoryImpl implements LancamentoRepositoryQuery {
 				criteriaBuilder.greaterThanOrEqualTo(root.get("dataVencimento"), 
 						primeiroDia),
 				criteriaBuilder.lessThanOrEqualTo(root.get("dataVencimento"), 
-						ultimoDia));
+						ultimoDia),
+				criteriaBuilder.equal(root.get("empresa"), 
+						empresa));
 		
 		criteriaQuery.groupBy(root.get("categoria"));
 		
@@ -93,7 +97,7 @@ public class LancamentoRepositoryImpl implements LancamentoRepositoryQuery {
 	}
 
 	@Override
-	public List<LancamentoEstatisticaDia> porDia(LocalDate mesReferencia) {
+	public List<LancamentoEstatisticaDia> porDia(LocalDate mesReferencia, Long empresa) {
 
         CriteriaBuilder criteriaBuilder = manager.getCriteriaBuilder();
 		
@@ -114,7 +118,9 @@ public class LancamentoRepositoryImpl implements LancamentoRepositoryQuery {
 				criteriaBuilder.greaterThanOrEqualTo(root.get("dataVencimento"), 
 						primeiroDia),
 				criteriaBuilder.lessThanOrEqualTo(root.get("dataVencimento"), 
-						ultimoDia));
+						ultimoDia),
+				criteriaBuilder.equal(root.get("empresa"), 
+						empresa));
 		
 		criteriaQuery.groupBy(root.get("tipo"),
 				root.get("dataVencimento"));

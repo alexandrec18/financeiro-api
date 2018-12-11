@@ -77,8 +77,9 @@ public class LancamentoResource {
 	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_LANCAMENTO') and #oauth2.hasScope('read')")
 	public ResponseEntity<byte[]> relatorioPorPessoa(
 			@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate inicio, 
-			@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fim) throws Exception {
-		byte[] relatorio = lancamentoService.relatorioPorPessoa(inicio, fim);
+			@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fim,
+			@RequestParam Long empresa) throws Exception {
+		byte[] relatorio = lancamentoService.relatorioPorPessoa(inicio, fim, empresa);
 		
 		HttpHeaders headers = new HttpHeaders();
 		  headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_PDF_VALUE);
@@ -91,14 +92,14 @@ public class LancamentoResource {
 	
 	@GetMapping("/estatisticas/por-categoria")
 	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_LANCAMENTO') and #oauth2.hasScope('read')")
-	public List<LancamentoEstatisticaCategoria> porCategoria(){
-		return lancamentoRepository.porCategoria(LocalDate.now());
+	public List<LancamentoEstatisticaCategoria> porCategoria(@RequestParam Long empresa){
+		return lancamentoRepository.porCategoria(LocalDate.now(), empresa);
 	}
 	
 	@GetMapping("/estatisticas/por-dia")
 	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_LANCAMENTO') and #oauth2.hasScope('read')")
-	public List<LancamentoEstatisticaDia> porDia(){
-		return lancamentoRepository.porDia(LocalDate.now());
+	public List<LancamentoEstatisticaDia> porDia(@RequestParam Long empresa){
+		return lancamentoRepository.porDia(LocalDate.now(), empresa);
 	}
 	
 	@GetMapping	

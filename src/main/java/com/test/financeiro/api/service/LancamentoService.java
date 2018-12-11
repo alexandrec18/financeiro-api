@@ -54,8 +54,8 @@ public class LancamentoService {
 //		mailer.avisarSobreLancamentosVencidos(vencidos, destinatarios);
 //	}
 	
-	public byte[] relatorioPorPessoa(LocalDate inicio, LocalDate fim) throws Exception {
-		List<LancamentoEstatisticaPessoa> dados = lancamentoRepository.porPessoa(inicio, fim);
+	public byte[] relatorioPorPessoa(LocalDate inicio, LocalDate fim, Long empresa) throws Exception {
+		List<LancamentoEstatisticaPessoa> dados = lancamentoRepository.porPessoa(inicio, fim, empresa);
 		
 		Map<String, Object> parametros = new HashMap<>();
 		parametros.put("DT_INICIO", Date.valueOf(inicio));
