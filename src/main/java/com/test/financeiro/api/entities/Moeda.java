@@ -1,6 +1,5 @@
 package com.test.financeiro.api.entities;
 
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,26 +11,30 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
-@Table(name = "categoria")
-public class Categoria {
+@Table(name = "moeda")
+public class Moeda {
 	
 	@Id
 	@GeneratedValue( strategy = GenerationType.IDENTITY )
 	private Long codigo;
 	
 	@NotNull
-	@Size(min = 3, max = 20)
+	@Size(max = 10)
+	private String sigla;
+	
+	@NotNull
+	@Size(min = 3, max = 50)
 	private String nome;
+	
+	@NotNull
+	@Size(max = 5)
+	private String simbolo;
 	
 	@NotNull
 	@ManyToOne
 	@JoinColumn(name = "codigo_empresa")
 	private Empresa empresa;
-	
-	public Categoria() {
-		
-	}
-	
+
 	public Long getCodigo() {
 		return codigo;
 	}
@@ -40,14 +43,30 @@ public class Categoria {
 		this.codigo = codigo;
 	}
 
+	public String getSigla() {
+		return sigla;
+	}
+
+	public void setSigla(String sigla) {
+		this.sigla = sigla;
+	}
+
 	public String getNome() {
 		return nome;
 	}
 
 	public void setNome(String nome) {
 		this.nome = nome;
-	}		
-	
+	}
+
+	public String getSimbolo() {
+		return simbolo;
+	}
+
+	public void setSimbolo(String simbolo) {
+		this.simbolo = simbolo;
+	}
+
 	public Empresa getEmpresa() {
 		return empresa;
 	}
@@ -72,13 +91,13 @@ public class Categoria {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Categoria other = (Categoria) obj;
+		Moeda other = (Moeda) obj;
 		if (codigo == null) {
 			if (other.codigo != null)
 				return false;
 		} else if (!codigo.equals(other.codigo))
 			return false;
 		return true;
-	}		
+	}
 
 }

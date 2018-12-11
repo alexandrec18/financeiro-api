@@ -18,6 +18,7 @@ import org.springframework.util.StringUtils;
 
 import com.test.financeiro.api.entities.Pessoa;
 import com.test.financeiro.api.repository.filter.PessoaFilter;
+import com.test.financeiro.api.repository.projection.ResumoPessoa;
 
 public class PessoaRepositoryImpl implements PessoaRepositoryQuery{
 	
@@ -42,6 +43,28 @@ public class PessoaRepositoryImpl implements PessoaRepositoryQuery{
 		return new PageImpl<>(query.getResultList(), pageable, total(pessoaFilter));
 	}
 
+	@Override
+	public Page<ResumoPessoa> resumir(PessoaFilter pessoaFilter, Pageable pageable) {
+		CriteriaBuilder builder = manager.getCriteriaBuilder();
+		CriteriaQuery<ResumoPessoa> criteria = builder.createQuery(ResumoPessoa.class);
+		Root<Pessoa> root = criteria.from(Pessoa.class);
+		
+		criteria.select(builder.construct(ResumoPessoa.class, 
+				  root.get("codigo"), root.get("nome"),
+				  root.get("endereco").get("cidade").get("nome"),
+				  root.get("endereco").get("cidade").get("estado").get("nome"),
+				  root.get("ativo")));
+
+		Predicate[] predicates = criarRestricoes(pessoaFilter, builder, root);
+		criteria.where(predicates);
+
+		TypedQuery<ResumoPessoa> query = manager.createQuery(criteria);
+		
+		adicionarRestricoesDePaginacao(query, pageable);
+		
+		return new PageImpl<>(query.getResultList(), pageable, total(pessoaFilter));
+	}	
+	
 	private Predicate[] criarRestricoes(PessoaFilter pessoaFilter, CriteriaBuilder builder,
 			Root<Pessoa> root) {
 		

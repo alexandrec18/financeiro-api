@@ -1,6 +1,5 @@
 package com.test.financeiro.api.entities;
 
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -8,30 +7,21 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 @Entity
-@Table(name = "categoria")
-public class Categoria {
+@Table(name = "venda_numero")
+public class VendaNumero {
 	
 	@Id
-	@GeneratedValue( strategy = GenerationType.IDENTITY )
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long codigo;
 	
-	@NotNull
-	@Size(min = 3, max = 20)
-	private String nome;
+	private Long numero;
 	
-	@NotNull
 	@ManyToOne
 	@JoinColumn(name = "codigo_empresa")
 	private Empresa empresa;
-	
-	public Categoria() {
-		
-	}
-	
+
 	public Long getCodigo() {
 		return codigo;
 	}
@@ -40,14 +30,14 @@ public class Categoria {
 		this.codigo = codigo;
 	}
 
-	public String getNome() {
-		return nome;
+	public Long getNumero() {
+		return numero;
 	}
 
-	public void setNome(String nome) {
-		this.nome = nome;
-	}		
-	
+	public void setNumero(Long numero) {
+		this.numero = numero;
+	}
+
 	public Empresa getEmpresa() {
 		return empresa;
 	}
@@ -72,13 +62,12 @@ public class Categoria {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Categoria other = (Categoria) obj;
+		VendaNumero other = (VendaNumero) obj;
 		if (codigo == null) {
 			if (other.codigo != null)
 				return false;
 		} else if (!codigo.equals(other.codigo))
 			return false;
 		return true;
-	}		
-
+	}
 }

@@ -1,37 +1,24 @@
 package com.test.financeiro.api.entities;
 
-
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 @Entity
-@Table(name = "categoria")
-public class Categoria {
-	
+@Table(name = "aeroporto")
+public class Aeroporto {
+
 	@Id
-	@GeneratedValue( strategy = GenerationType.IDENTITY )
 	private Long codigo;
 	
-	@NotNull
-	@Size(min = 3, max = 20)
+	private String iata;
+	
 	private String nome;
 	
-	@NotNull
-	@ManyToOne
-	@JoinColumn(name = "codigo_empresa")
-	private Empresa empresa;
+	private String cidade;
 	
-	public Categoria() {
-		
-	}
-	
+	private String pais;
+
 	public Long getCodigo() {
 		return codigo;
 	}
@@ -40,20 +27,36 @@ public class Categoria {
 		this.codigo = codigo;
 	}
 
+	public String getIata() {
+		return iata;
+	}
+
+	public void setIata(String iata) {
+		this.iata = iata;
+	}
+
 	public String getNome() {
 		return nome;
 	}
 
 	public void setNome(String nome) {
 		this.nome = nome;
-	}		
-	
-	public Empresa getEmpresa() {
-		return empresa;
 	}
 
-	public void setEmpresa(Empresa empresa) {
-		this.empresa = empresa;
+	public String getCidade() {
+		return cidade;
+	}
+
+	public void setCidade(String cidade) {
+		this.cidade = cidade;
+	}
+
+	public String getPais() {
+		return pais;
+	}
+
+	public void setPais(String pais) {
+		this.pais = pais;
 	}
 
 	@Override
@@ -72,13 +75,12 @@ public class Categoria {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Categoria other = (Categoria) obj;
+		Aeroporto other = (Aeroporto) obj;
 		if (codigo == null) {
 			if (other.codigo != null)
 				return false;
 		} else if (!codigo.equals(other.codigo))
 			return false;
 		return true;
-	}		
-
+	}
 }

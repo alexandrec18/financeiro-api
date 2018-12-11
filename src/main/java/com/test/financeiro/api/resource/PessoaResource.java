@@ -26,6 +26,7 @@ import com.test.financeiro.api.entities.Pessoa;
 import com.test.financeiro.api.event.RecursoCriadoEvent;
 import com.test.financeiro.api.repository.PessoaRepository;
 import com.test.financeiro.api.repository.filter.PessoaFilter;
+import com.test.financeiro.api.repository.projection.ResumoPessoa;
 import com.test.financeiro.api.service.PessoaService;
 
 @RestController
@@ -45,6 +46,12 @@ public class PessoaResource {
 	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_PESSOA') and #oauth2.hasScope('read')")
 	public Page<Pessoa> listar(PessoaFilter pessoaFilter,  Pageable pageable){
 		return pessoaRepository.filtrar(pessoaFilter, pageable);
+	}
+	
+	@GetMapping(params = "resumo")
+	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_PESSOA') and #oauth2.hasScope('read')")
+	public Page<ResumoPessoa> resumir(PessoaFilter pessoaFilter, Pageable pageable){
+		return pessoaRepository.resumir(pessoaFilter, pageable);
 	}
 	
 	@PostMapping

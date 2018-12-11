@@ -5,9 +5,11 @@ import org.springframework.data.domain.Pageable;
 
 import com.test.financeiro.api.entities.Pessoa;
 import com.test.financeiro.api.repository.filter.PessoaFilter;
+import com.test.financeiro.api.repository.projection.ResumoPessoa;
 
 public interface PessoaRepositoryQuery {
 	
 	public Page<Pessoa> filtrar(PessoaFilter pessoaFilter, Pageable pageable);
+	public Page<ResumoPessoa> resumir(PessoaFilter pessoaFilter, Pageable pageable);
 	
 }

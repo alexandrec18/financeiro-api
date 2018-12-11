@@ -1,6 +1,5 @@
 package com.test.financeiro.api.entities;
 
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,9 +11,9 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
-@Table(name = "categoria")
-public class Categoria {
-	
+@Table(name = "transporte")
+public class Transporte {
+
 	@Id
 	@GeneratedValue( strategy = GenerationType.IDENTITY )
 	private Long codigo;
@@ -27,11 +26,7 @@ public class Categoria {
 	@ManyToOne
 	@JoinColumn(name = "codigo_empresa")
 	private Empresa empresa;
-	
-	public Categoria() {
-		
-	}
-	
+
 	public Long getCodigo() {
 		return codigo;
 	}
@@ -46,8 +41,8 @@ public class Categoria {
 
 	public void setNome(String nome) {
 		this.nome = nome;
-	}		
-	
+	}
+
 	public Empresa getEmpresa() {
 		return empresa;
 	}
@@ -72,13 +67,12 @@ public class Categoria {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Categoria other = (Categoria) obj;
+		Transporte other = (Transporte) obj;
 		if (codigo == null) {
 			if (other.codigo != null)
 				return false;
 		} else if (!codigo.equals(other.codigo))
 			return false;
 		return true;
-	}		
-
+	}
 }
