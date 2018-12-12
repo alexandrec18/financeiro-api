@@ -19,13 +19,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.test.financeiro.api.entities.Empresa;
 import com.test.financeiro.api.event.RecursoCriadoEvent;
 import com.test.financeiro.api.repository.EmpresaRepository;
+import com.test.financeiro.api.repository.filter.EmpresaFilter;
 import com.test.financeiro.api.service.EmpresaService;
 
 @RestController
@@ -43,8 +43,8 @@ public class EmpresaResource {
 	
 	@GetMapping
 	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_EMPRESA') and #oauth2.hasScope('read')")
-	public Page<Empresa> listar(@RequestParam(required = false, defaultValue = "%") String nome, Pageable pageable){
-		return empresaRepository.findByNomeContaining(nome, pageable);
+	public Page<Empresa> listar(EmpresaFilter empresaFilter, Pageable pageable){
+		return empresaRepository.filtrar(empresaFilter, pageable);
 	}
 	
 	@PostMapping

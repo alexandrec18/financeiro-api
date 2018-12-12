@@ -19,13 +19,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.test.financeiro.api.entities.Usuario;
 import com.test.financeiro.api.event.RecursoCriadoEvent;
 import com.test.financeiro.api.repository.UsuarioRepository;
+import com.test.financeiro.api.repository.filter.UsuarioFilter;
 import com.test.financeiro.api.service.UsuarioService;
 
 @RestController
@@ -43,8 +43,8 @@ public class UsuarioResource {
 	
 	@GetMapping
 	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_USUARIO') and #oauth2.hasScope('read')")
-	public Page<Usuario> listar(@RequestParam(required = false, defaultValue = "%") String nome, Pageable pageable){
-		return usuarioRepository.findByNomeContaining(nome, pageable);
+	public Page<Usuario> listar(UsuarioFilter usuarioFilter, Pageable pageable){
+		return usuarioRepository.filtrar(usuarioFilter, pageable);
 	}
 	
 	@PostMapping
