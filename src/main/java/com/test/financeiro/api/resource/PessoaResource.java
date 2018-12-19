@@ -1,5 +1,6 @@
 package com.test.financeiro.api.resource;
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletResponse;
@@ -48,11 +49,17 @@ public class PessoaResource {
 		return pessoaRepository.filtrar(pessoaFilter, pageable);
 	}
 	
+	@GetMapping(params = "sempaginacao")
+	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_PESSOA') and #oauth2.hasScope('read')")
+	public List<ResumoPessoa> listar(PessoaFilter pessoaFilter){
+		return pessoaRepository.listar(pessoaFilter);
+	}
+	
 	@GetMapping(params = "resumo")
 	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_PESSOA') and #oauth2.hasScope('read')")
 	public Page<ResumoPessoa> resumir(PessoaFilter pessoaFilter, Pageable pageable){
 		return pessoaRepository.resumir(pessoaFilter, pageable);
-	}
+	}		
 	
 	@PostMapping
 	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_PESSOA') and #oauth2.hasScope('write')")

@@ -1,11 +1,17 @@
 package com.test.financeiro.api.service;
 
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.test.financeiro.api.dto.VendaPorDocumento;
 import com.test.financeiro.api.entities.Empresa;
 import com.test.financeiro.api.entities.Pessoa;
 import com.test.financeiro.api.entities.Usuario;
@@ -17,6 +23,11 @@ import com.test.financeiro.api.repository.VendaNumeroRepository;
 import com.test.financeiro.api.repository.VendaRepository;
 import com.test.financeiro.api.service.exception.PaganteInexistenteOuInativoException;
 import com.test.financeiro.api.service.exception.VendedorInexistenteOuInativoException;
+
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 @Service
 public class VendaService {
@@ -32,6 +43,21 @@ public class VendaService {
 	
 	@Autowired
 	private VendaRepository vendaRepository;
+	
+	public byte[] relatorioPorDocumento(Long codigo) throws Exception {
+		List<VendaPorDocumento> dados = vendaRepository.porDocumento(codigo);
+		
+		Map<String, Object> parametros = new HashMap<>();		
+		parametros.put("REPORT_LOCALE", new Locale("pt", "BR"));
+		
+		InputStream inputStream = this.getClass().getResourceAsStream(
+				"/relatorios/vendas-por-documento.jasper");
+		
+		JasperPrint jasperPrint = JasperFillManager.fillReport(inputStream, parametros,
+				new JRBeanCollectionDataSource(dados));
+		
+		return JasperExportManager.exportReportToPdf(jasperPrint);
+	}
 	
     public Venda salvar(Venda venda) {
 		

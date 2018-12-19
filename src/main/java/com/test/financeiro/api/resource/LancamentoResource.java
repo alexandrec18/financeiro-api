@@ -73,6 +73,23 @@ public class LancamentoResource {
 		return "ok";
 	}
 	
+	@GetMapping("/relatorios/por-periodo")
+	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_LANCAMENTO') and #oauth2.hasScope('read')")
+	public ResponseEntity<byte[]> relatorioPorPeriodo(
+			@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate inicio, 
+			@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fim,
+			@RequestParam Long empresa) throws Exception {
+		byte[] relatorio = lancamentoService.relatorioPorPeriodo(inicio, fim, empresa);
+		
+		HttpHeaders headers = new HttpHeaders();
+		  headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_PDF_VALUE);
+		  headers.add("Content-Disposition", "attachment; filename=porPeriodo.pdf");
+		
+		return ResponseEntity.ok()
+				.headers(headers)
+				.body(relatorio);
+	}
+	
 	@GetMapping("/relatorios/por-pessoa")
 	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_LANCAMENTO') and #oauth2.hasScope('read')")
 	public ResponseEntity<byte[]> relatorioPorPessoa(

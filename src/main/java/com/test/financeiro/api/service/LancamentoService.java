@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.test.financeiro.api.dto.LancamentoEstatisticaPessoa;
+import com.test.financeiro.api.dto.LancamentoPorPeriodo;
 import com.test.financeiro.api.entities.Lancamento;
 import com.test.financeiro.api.entities.Pessoa;
 import com.test.financeiro.api.repository.LancamentoRepository;
@@ -53,6 +54,23 @@ public class LancamentoService {
 //		
 //		mailer.avisarSobreLancamentosVencidos(vencidos, destinatarios);
 //	}
+	
+	public byte[] relatorioPorPeriodo(LocalDate inicio, LocalDate fim, Long empresa) throws Exception {
+		List<LancamentoPorPeriodo> dados = lancamentoRepository.porPeriodo(inicio, fim, empresa);
+		
+		Map<String, Object> parametros = new HashMap<>();
+		parametros.put("DT_INICIO", Date.valueOf(inicio));
+		parametros.put("DT_FIM", Date.valueOf(fim));
+		parametros.put("REPORT_LOCALE", new Locale("pt", "BR"));
+		
+		InputStream inputStream = this.getClass().getResourceAsStream(
+				"/relatorios/lancamentos-por-periodo.jasper");
+		
+		JasperPrint jasperPrint = JasperFillManager.fillReport(inputStream, parametros,
+				new JRBeanCollectionDataSource(dados));
+		
+		return JasperExportManager.exportReportToPdf(jasperPrint);
+	}
 	
 	public byte[] relatorioPorPessoa(LocalDate inicio, LocalDate fim, Long empresa) throws Exception {
 		List<LancamentoEstatisticaPessoa> dados = lancamentoRepository.porPessoa(inicio, fim, empresa);

@@ -52,6 +52,12 @@ public class ValoresVendaProduto {
 	
 	@Column(name = "total_produto_brl")
 	private BigDecimal totalProdutoBrl;
+	
+	@Column(name = "valor_total_original")
+	private BigDecimal valorTotalOriginal;
+	
+	@Column(name = "valor_total_original_brl")
+	private BigDecimal valorTotalOriginalBrl;
 	  
 	@Column(name = "valor_total")
 	private BigDecimal valorTotal;
@@ -175,6 +181,22 @@ public class ValoresVendaProduto {
 
 	public void setValorTotal(BigDecimal valorTotal) {
 		this.valorTotal = valorTotal;
+	}
+
+	public BigDecimal getValorTotalOriginal() {
+		return valorTotalOriginal;
+	}
+
+	public void setValorTotalOriginal(BigDecimal valorTotalOriginal) {
+		this.valorTotalOriginal = valorTotalOriginal;
+	}
+
+	public BigDecimal getValorTotalOriginalBrl() {
+		return valorTotalOriginalBrl;
+	}
+
+	public void setValorTotalOriginalBrl(BigDecimal valorTotalOriginalBrl) {
+		this.valorTotalOriginalBrl = valorTotalOriginalBrl;
 	}
 
 	public BigDecimal getValorTotalBrl() {

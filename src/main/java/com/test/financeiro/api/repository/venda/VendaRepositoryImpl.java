@@ -16,7 +16,10 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.util.StringUtils;
 
+import com.test.financeiro.api.dto.VendaPorDocumento;
 import com.test.financeiro.api.entities.Venda;
+import com.test.financeiro.api.entities.VendaFormaPagamento;
+import com.test.financeiro.api.entities.VendaProduto;
 import com.test.financeiro.api.repository.filter.VendaFilter;
 import com.test.financeiro.api.repository.projection.ResumoVenda;
 
@@ -25,6 +28,74 @@ public class VendaRepositoryImpl implements VendaRepositoryQuery{
 	@PersistenceContext
 	private EntityManager manager;
 
+	@Override
+	public List<VendaPorDocumento> porDocumento(Long codigo) {
+		
+        CriteriaBuilder criteriaBuilder = manager.getCriteriaBuilder();
+		
+		CriteriaQuery<VendaPorDocumento> criteriaQuery = criteriaBuilder.
+				createQuery(VendaPorDocumento.class);
+		
+		Root<Venda> rootVen = criteriaQuery.from(Venda.class);
+		Root<VendaProduto> rootVenPro = criteriaQuery.from(VendaProduto.class);
+		Root<VendaFormaPagamento> rootVenForPag = criteriaQuery.from(VendaFormaPagamento.class);
+		
+		criteriaQuery.multiselect(criteriaBuilder.construct(VendaPorDocumento.class,
+				rootVen.get("dataVenda"), 
+				rootVenPro.get("produto"), 
+				rootVenForPag.get("formaPagamento")));		
+				
+		criteriaQuery.where(				
+				criteriaBuilder.equal(rootVenPro.get("venda"), 
+						rootVen.get("codigo")),
+				criteriaBuilder.equal(rootVenForPag.get("venda"), 
+						rootVen.get("codigo")),
+				criteriaBuilder.equal(rootVen.get("codigo"), 
+						codigo)
+				);			
+		
+		TypedQuery<VendaPorDocumento> typedQuery = manager
+				.createQuery(criteriaQuery);
+		
+		return typedQuery.getResultList();
+		
+
+//        CriteriaBuilder criteriaBuilder = manager.getCriteriaBuilder();
+//		
+//		CriteriaQuery<VendaPorDocumento> criteriaQuery = criteriaBuilder.
+//				createQuery(VendaPorDocumento.class);
+//		
+//		Root<Venda> root = criteriaQuery.from(Venda.class);
+//		
+//		criteriaQuery.select(criteriaBuilder.construct(VendaPorDocumento.class, 
+//				// root.get("codigo"),
+//				root.get("dataVenda"),
+//				root.get("numero"),
+//				root.get("situacao"),
+//				root.get("empresa"),
+//				root.get("vendedor"),
+//				root.get("pagante"),
+//				root.get("periodoInicial"),
+//				root.get("periodoFinal"),
+//				root.get("intermediario"),
+//				root.get("solicitante"),
+//				root.get("observacao"),
+//				root.get("vendaProduto"),
+//				root.get("vendaFormaPagamento"),
+//				root.get("totalProdutos"),
+//				root.get("totalFinal")));
+//				
+//		criteriaQuery.where(				
+//				criteriaBuilder.equal(root.get("codigo"), 
+//						codigo));			
+//		
+//		TypedQuery<VendaPorDocumento> typedQuery = manager
+//				.createQuery(criteriaQuery);
+//		
+//		return typedQuery.getResultList();		
+
+	}
+	
 	@Override
 	public Page<Venda> filtrar(VendaFilter vendaFilter, Pageable pageable) {
 		CriteriaBuilder builder = manager.getCriteriaBuilder();

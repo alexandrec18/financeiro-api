@@ -21,6 +21,7 @@ import org.springframework.util.StringUtils;
 import com.test.financeiro.api.dto.LancamentoEstatisticaCategoria;
 import com.test.financeiro.api.dto.LancamentoEstatisticaDia;
 import com.test.financeiro.api.dto.LancamentoEstatisticaPessoa;
+import com.test.financeiro.api.dto.LancamentoPorPeriodo;
 import com.test.financeiro.api.entities.Lancamento;
 import com.test.financeiro.api.repository.filter.LancamentoFilter;
 import com.test.financeiro.api.repository.projection.ResumoLancamento;
@@ -29,6 +30,39 @@ public class LancamentoRepositoryImpl implements LancamentoRepositoryQuery {
 	
 	@PersistenceContext
 	private EntityManager manager;
+	
+	@Override
+	public List<LancamentoPorPeriodo> porPeriodo(LocalDate inicio, LocalDate fim, Long empresa) {
+
+        CriteriaBuilder criteriaBuilder = manager.getCriteriaBuilder();
+		
+		CriteriaQuery<LancamentoPorPeriodo> criteriaQuery = criteriaBuilder.
+				createQuery(LancamentoPorPeriodo.class);
+		
+		Root<Lancamento> root = criteriaQuery.from(Lancamento.class);
+		
+		criteriaQuery.select(criteriaBuilder.construct(LancamentoPorPeriodo.class, 
+				root.get("tipo"),
+				root.get("pessoa"),
+				root.get("valor"),
+				root.get("dataVencimento"),
+				root.get("dataPagamento")));
+				
+		criteriaQuery.where(
+				criteriaBuilder.greaterThanOrEqualTo(root.get("dataVencimento"), 
+						inicio),
+				criteriaBuilder.lessThanOrEqualTo(root.get("dataVencimento"), 
+						fim),
+				criteriaBuilder.equal(root.get("empresa"), 
+						empresa));
+		
+		criteriaQuery.orderBy(criteriaBuilder.asc(root.get("dataVencimento")));
+		
+		TypedQuery<LancamentoPorPeriodo> typedQuery = manager
+				.createQuery(criteriaQuery);
+		
+		return typedQuery.getResultList();
+	}
 	
 	@Override
 	public List<LancamentoEstatisticaPessoa> porPessoa(LocalDate inicio, LocalDate fim, Long empresa) {

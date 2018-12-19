@@ -63,7 +63,28 @@ public class PessoaRepositoryImpl implements PessoaRepositoryQuery{
 		adicionarRestricoesDePaginacao(query, pageable);
 		
 		return new PageImpl<>(query.getResultList(), pageable, total(pessoaFilter));
+	}
+	
+	@Override
+	public List<ResumoPessoa> listar(PessoaFilter pessoaFilter) {
+		CriteriaBuilder builder = manager.getCriteriaBuilder();
+		CriteriaQuery<ResumoPessoa> criteria = builder.createQuery(ResumoPessoa.class);
+		Root<Pessoa> root = criteria.from(Pessoa.class);
+		
+		criteria.select(builder.construct(ResumoPessoa.class, 
+				  root.get("codigo"), root.get("nome"),
+				  root.get("endereco").get("cidade").get("nome"),
+				  root.get("endereco").get("cidade").get("estado").get("nome"),
+				  root.get("ativo")));
+
+		Predicate[] predicates = criarRestricoes(pessoaFilter, builder, root);
+		criteria.where(predicates);
+
+		TypedQuery<ResumoPessoa> query = manager.createQuery(criteria);
+		
+		return query.getResultList();
 	}	
+
 	
 	private Predicate[] criarRestricoes(PessoaFilter pessoaFilter, CriteriaBuilder builder,
 			Root<Pessoa> root) {

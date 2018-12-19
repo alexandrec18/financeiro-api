@@ -1,7 +1,7 @@
 package com.test.financeiro.api.entities;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -51,13 +51,13 @@ public class VendaProduto {
 	private LocalDate dataInicio;
 	
 	@Column(name = "hora_inicio")
-	private LocalTime horaInicio;
+	private LocalDateTime horaInicio;
 	
 	@Column(name = "data_fim")
 	private LocalDate dataFim;
 	
 	@Column(name = "hora_fim")
-	private LocalTime horaFim;
+	private LocalDateTime horaFim;
 	
 	@ManyToOne
 	@JoinColumn(name = "codigo_acomodacao")
@@ -112,6 +112,12 @@ public class VendaProduto {
 	private String reciboOperadora;
 	  
 	private String observacao;
+	
+	private String retirada;
+	
+	private String devolucao;
+	
+	private String categoria;
 
 	public Long getCodigo() {
 		return codigo;
@@ -161,11 +167,11 @@ public class VendaProduto {
 		this.dataInicio = dataInicio;
 	}
 
-	public LocalTime getHoraInicio() {
+	public LocalDateTime getHoraInicio() {
 		return horaInicio;
 	}
 
-	public void setHoraInicio(LocalTime horaInicio) {
+	public void setHoraInicio(LocalDateTime horaInicio) {
 		this.horaInicio = horaInicio;
 	}
 
@@ -177,11 +183,11 @@ public class VendaProduto {
 		this.dataFim = dataFim;
 	}
 
-	public LocalTime getHoraFim() {
+	public LocalDateTime getHoraFim() {
 		return horaFim;
 	}
 
-	public void setHoraFim(LocalTime horaFim) {
+	public void setHoraFim(LocalDateTime horaFim) {
 		this.horaFim = horaFim;
 	}
 
@@ -303,6 +309,30 @@ public class VendaProduto {
 
 	public void setObservacao(String observacao) {
 		this.observacao = observacao;
+	}
+
+	public String getRetirada() {
+		return retirada;
+	}
+
+	public void setRetirada(String retirada) {
+		this.retirada = retirada;
+	}
+
+	public String getDevolucao() {
+		return devolucao;
+	}
+
+	public void setDevolucao(String devolucao) {
+		this.devolucao = devolucao;
+	}
+
+	public String getCategoria() {
+		return categoria;
+	}
+
+	public void setCategoria(String categoria) {
+		this.categoria = categoria;
 	}
 
 	@Override

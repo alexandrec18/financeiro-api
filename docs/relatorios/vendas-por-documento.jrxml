@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="vendas-por-documento" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="689f3ef6-c643-41be-9545-691059451099">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<subDataset name="Dataset1" uuid="1dd309a6-12f4-4dd4-8f5e-e80710f483cf">
+		<queryString>
+			<![CDATA[]]>
+		</queryString>
+		<field name="passageiro" class="com.test.financeiro.api.entities.Pessoa"/>
+		<field name="centroCusto" class="java.lang.String"/>
+		<field name="documento" class="java.lang.String"/>
+		<field name="valorProdutoBrl" class="java.math.BigDecimal"/>
+		<field name="taxasBrl" class="java.math.BigDecimal"/>
+		<field name="outrasTaxasBrl" class="java.math.BigDecimal"/>
+		<field name="taxaRavBrl" class="java.math.BigDecimal"/>
+		<field name="taxaDuBrl" class="java.math.BigDecimal"/>
+		<field name="taxaServicoOcultaBrl" class="java.math.BigDecimal"/>
+		<field name="valorTotalBrl" class="java.math.BigDecimal"/>
+	</subDataset>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="codigo" class="java.lang.Long"/>
+	<field name="dataVenda" class="java.time.LocalDate"/>
+	<field name="numero" class="java.lang.Long"/>
+	<field name="situacao" class="com.test.financeiro.api.entities.Situacao"/>
+	<field name="empresa" class="com.test.financeiro.api.entities.Empresa"/>
+	<field name="vendedor" class="com.test.financeiro.api.entities.Usuario"/>
+	<field name="pagante" class="com.test.financeiro.api.entities.Pessoa"/>
+	<field name="periodoInicial" class="java.time.LocalDate"/>
+	<field name="periodoFinal" class="java.time.LocalDate"/>
+	<field name="intermediario" class="com.test.financeiro.api.entities.Pessoa"/>
+	<field name="solicitante" class="com.test.financeiro.api.entities.Pessoa"/>
+	<field name="observacao" class="java.lang.String"/>
+	<field name="vendaProduto" class="com.test.financeiro.api.entities.VendaProduto"/>
+	<field name="vendaFormaPagamento" class="com.test.financeiro.api.entities.VendaFormaPagamento"/>
+	<field name="totalProdutos" class="java.math.BigDecimal"/>
+	<field name="totalFinal" class="java.math.BigDecimal"/>
+	<group name="VendaProdutoDHGroup">
+		<groupExpression><![CDATA[$F{vendaProduto}]]></groupExpression>
+		<groupHeader>
+			<band height="123">
+				<printWhenExpression><![CDATA[$F{vendaProduto}.getProduto().getDescricao() == "Diária de Hospedagem"]]></printWhenExpression>
+				<rectangle>
+					<reportElement x="0" y="0" width="555" height="25" backcolor="#F0F0F0" uuid="86989b22-b358-440b-8766-eacd4689f225"/>
+				</rectangle>
+				<staticText>
+					<reportElement x="0" y="0" width="80" height="24" uuid="6c14ed6a-c584-4ddb-be99-d22d06fefcbf"/>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[Produto]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="80" y="0" width="69" height="24" printWhenGroupChanges="VendaProdutoDHGroup" uuid="0461885b-3308-46e2-b75e-70f74e428446"/>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[Hotel]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="184" y="0" width="80" height="24" uuid="c7123a7e-8bc9-4af6-82b9-f3fa72ffcd69"/>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[Representante]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="310" y="0" width="61" height="24" uuid="42564c6d-7131-4e12-a826-110ad789c136"/>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[Check-in]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="390" y="0" width="60" height="24" uuid="c82b6529-f77c-48ee-b3d8-9cea9b5a9c25"/>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[Check-in]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="480" y="0" width="60" height="24" uuid="818e15bc-ff29-44ff-b720-8f99c666c538"/>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[Reserva]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="1" y="49" width="65" height="25" uuid="279aebd0-5f44-4205-bee1-9f3429757bec"/>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[Acomodação:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="109" y="49" width="40" height="25" uuid="f9612a0e-8c0e-4e13-b647-5d47f7129ff1"/>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[Regime:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="180" y="49" width="48" height="25" uuid="57785125-5fed-4506-8ed8-5ef39ef2967b"/>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[Categoria:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="280" y="49" width="59" height="25" uuid="486af773-2df7-4aad-8c16-b6852178e3f4"/>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[Número NF:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="370" y="49" width="80" height="25" uuid="d012f26d-82a0-4974-acda-77f62387c6d2"/>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[Número Externo:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="464" y="49" width="90" height="25" uuid="0705bcca-ee15-4ee1-9f97-ab6336b09dd6"/>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[Recibo Operadora:]]></text>
+				</staticText>
+				<rectangle>
+					<reportElement x="0" y="96" width="554" height="25" uuid="911168df-b3e8-4308-814a-4dc40d8f6cc8"/>
+				</rectangle>
+				<staticText>
+					<reportElement x="0" y="97" width="80" height="22" uuid="f702d950-acad-4b45-a5ef-e36433a9333c"/>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[Hóspede]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="134" y="97" width="76" height="22" uuid="afe5f449-2c10-4ee6-9084-cf1b6abb43ce"/>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[C. Custo Pass.]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="220" y="97" width="70" height="22" uuid="17de3f80-f5b2-4cc7-a29e-e6368555cb99"/>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[Valor]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="305" y="97" width="80" height="22" uuid="13c7d6c1-7dba-4814-abe0-c7ac356ce928"/>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[Tx. Serv. Oculta]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="390" y="97" width="70" height="22" uuid="9269dcaa-84ac-4109-b3c3-268945afd717"/>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[Taxa RAV]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="474" y="97" width="70" height="22" uuid="c944bf4b-8d69-441a-9274-bbfa25cd0651"/>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[Total]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="50"/>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="52" splitType="Stretch">
+			<staticText>
+				<reportElement x="184" y="8" width="187" height="30" uuid="f547281d-7f96-4054-9648-7936819e4160"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="18"/>
+				</textElement>
+				<text><![CDATA[Relatório de Venda]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="50" width="555" height="1" uuid="65365cdb-2d62-48c4-88f0-e6c9154c99ca"/>
+			</line>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="92">
+			<staticText>
+				<reportElement x="0" y="-1" width="40" height="20" uuid="8ed09033-8afd-449b-8ac5-2b40b0221716"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Venda:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="20" width="50" height="20" uuid="45942bcb-0e72-4ead-862e-808eaa0614f7"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Pagante:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="40" width="50" height="20" uuid="47539f67-1d82-4f73-9f7a-145fd277d69c"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Endereco:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="240" y="40" width="41" height="20" uuid="30b117c5-6787-457a-8721-c235fdf520db"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Bairro:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="370" y="40" width="41" height="20" uuid="5c7467ac-756a-4c50-b0d5-60b6b4d0d52a"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Cidade:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="480" y="40" width="41" height="20" uuid="d0bb5fbf-7c16-4b3e-90d6-04155fb278b4"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Estado:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="60" width="50" height="20" uuid="a7ccab6f-73ed-4131-b5ce-33561ca3b8b2"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Cpf/Cnpj:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="130" y="60" width="40" height="20" uuid="79371111-c899-4dd8-86e3-411c173faaec"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[IE/RG:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="240" y="60" width="50" height="20" uuid="dcf41305-5ac7-48ea-877b-aa17a5b65cf6"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Telefone:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="370" y="60" width="41" height="20" uuid="2c4bfb18-e743-48d4-9b40-544d56a81112"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[E-mail:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="160" y="0" width="50" height="20" uuid="7a4a3b24-0c56-4ebd-8186-9c4e0f47e536"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Vendedor:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="310" y="0" width="70" height="20" uuid="1ac0e183-c051-4023-89c5-0c49adf15e59"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Data da Venda:]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="26" splitType="Stretch">
+			<componentElement>
+				<reportElement x="0" y="0" width="555" height="25" uuid="0a8b7036-9bdb-45dc-8419-8fb61ba141e6"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="Dataset1" uuid="639e5de5-8b91-4478-887d-ebda6983ecdf">
+						<parametersMapExpression><![CDATA[$F{vendaProduto}.getVendaProdutoPassageiro()]]></parametersMapExpression>
+					</datasetRun>
+					<jr:listContents height="25" width="555">
+						<textField>
+							<reportElement x="0" y="0" width="130" height="23" uuid="b46c1595-b22c-4371-82e4-f155a10f8508"/>
+							<textElement verticalAlignment="Middle"/>
+							<textFieldExpression><![CDATA[$F{passageiro}.getNome()]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="135" y="0" width="80" height="23" uuid="e9f9492b-b147-43e3-ad1e-7538a6887d36"/>
+							<textElement verticalAlignment="Middle"/>
+							<textFieldExpression><![CDATA[$F{centroCusto}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="220" y="0" width="80" height="23" uuid="ac093bb5-00a8-45a2-ac48-8e1ac03fbc3e"/>
+							<textElement textAlignment="Right" verticalAlignment="Middle"/>
+							<textFieldExpression><![CDATA[$F{valorProdutoBrl}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="305" y="0" width="80" height="23" uuid="e46b5ffe-938d-4605-9c4f-9303f0e1a4d4"/>
+							<textElement textAlignment="Right" verticalAlignment="Middle"/>
+							<textFieldExpression><![CDATA[$F{taxaServicoOcultaBrl}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="390" y="0" width="80" height="23" uuid="e2aa0249-35a1-4112-aab8-dc8e7a4e6ca5"/>
+							<textElement textAlignment="Right" verticalAlignment="Middle"/>
+							<textFieldExpression><![CDATA[$F{taxaServicoOcultaBrl}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="474" y="0" width="80" height="23" uuid="b0106355-c975-4615-8327-b38d481566b0"/>
+							<textElement textAlignment="Right" verticalAlignment="Middle"/>
+							<textFieldExpression><![CDATA[$F{taxaServicoOcultaBrl}]]></textFieldExpression>
+						</textField>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>
